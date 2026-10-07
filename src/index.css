@@ -20,6 +20,8 @@
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
+  /* Always reserve the scrollbar gutter so fixed nav never jumps when content height changes. */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -55,4 +57,50 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ---- Atmosphere layer (src/atmosphere) ---- */
+.atm-loader { opacity: 1; transition: opacity 0.7s ease; }
+.atm-loader-out { opacity: 0; }
+
+@keyframes atm-flicker-a {
+  0%, 8% { opacity: 0.08; }
+  9%, 14% { opacity: 1; }
+  15%, 19% { opacity: 0.1; }
+  20%, 34% { opacity: 1; }
+  35%, 38% { opacity: 0.06; }
+  39%, 47% { opacity: 0.95; }
+  48%, 50% { opacity: 0.2; }
+  51%, 100% { opacity: 1; }
+}
+@keyframes atm-flicker-b {
+  0%, 22% { opacity: 0.06; }
+  23%, 27% { opacity: 1; }
+  28%, 31% { opacity: 0.08; }
+  32%, 40% { opacity: 1; }
+  41%, 44% { opacity: 0.12; }
+  45%, 56% { opacity: 0.9; }
+  57%, 59% { opacity: 0.15; }
+  60%, 100% { opacity: 1; }
+}
+.atm-flicker-a { animation: atm-flicker-a 1.3s linear both; }
+.atm-flicker-b { animation: atm-flicker-b 1.3s linear both; }
+
+@keyframes atm-ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.atm-ticker-track { animation: atm-ticker 38s linear infinite; }
+.atm-ticker:hover .atm-ticker-track { animation-play-state: paused; }
+
+@keyframes atm-rain {
+  from { transform: translate3d(0, -12vh, 0) rotate(0deg); opacity: 1; }
+  85% { opacity: 1; }
+  to { transform: translate3d(0, 112vh, 0) rotate(var(--atm-rot, 360deg)); opacity: 0; }
+}
+.atm-rain-card { animation-name: atm-rain; animation-timing-function: cubic-bezier(0.3, 0.1, 0.6, 1); animation-fill-mode: both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .atm-flicker-a, .atm-flicker-b { animation: none !important; opacity: 1; }
+  .atm-loader { transition-duration: 0.3s !important; }
+  .atm-ticker-track { animation: none !important; width: auto; flex-wrap: wrap; justify-content: center; padding-inline: 1rem; }
+  .atm-ticker-group { flex-wrap: wrap; justify-content: center; }
+  .atm-ticker-group[data-dup='true'] { display: none; }
 }

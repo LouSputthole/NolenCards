@@ -769,7 +769,8 @@ const holoFragment = /* glsl */ `
     vec3 goldTint = vec3(1.0, 0.78, 0.36);
     vec3 sheen = mix(rainbow, goldTint * (0.55 + 0.6 * rainbow.r), uGold);
 
-    float lines = pow(0.5 + 0.5 * sin((vUv.x - vUv.y) * 120.0 + R.x * 14.0), 10.0);
+    // Fine diagonal foil lines (softer on the gold card so the code stays crisp).
+    float lines = pow(0.5 + 0.5 * sin((vUv.x - vUv.y) * 120.0 + R.x * 14.0), 10.0) * mix(1.0, 0.4, uGold);
     float lum = dot(base, vec3(0.299, 0.587, 0.114));
 
     vec3 col = base;

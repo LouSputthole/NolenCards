@@ -54,3 +54,12 @@ export const reviews = [
   { quote: 'The best card shop in the Nashville area. Staff actually know the hobby and treat kids great.', who: 'Google review' },
   { quote: 'Fair prices on singles and they gave me a real offer on my collection, not a lowball.', who: 'Google review' },
 ]
+
+export const ticker = [
+  'New Pokémon sets on release day',
+  'We buy collections · cash or trade',
+  'Trade nights · all ages',
+  'Kids club',
+  'Graded slabs: PSA · BGS · CGC',
+  '7177 Nolensville Rd · Suite A3',
+]

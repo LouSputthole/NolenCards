@@ -1,4 +1,5 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { preload } from '../sfx.js'
 import { MotionConfig, motion } from 'framer-motion'
 import { promo, shop } from '../content.js'
 
@@ -79,7 +80,7 @@ function OpenPrompt({ opened, isTouch, onOpen, onSkip }) {
       <button
         type="button"
         onClick={onSkip}
-        className="pointer-events-auto rounded-full px-3 py-1.5 text-xs uppercase tracking-[0.28em] text-fog/80 underline-offset-4 transition-colors hover:text-snow hover:underline focus-visible:outline-2 focus-visible:outline-neon-blue"
+        className="pointer-events-auto rounded-full border border-line bg-ink/60 px-4 py-1.5 text-xs uppercase tracking-[0.28em] text-fog backdrop-blur-sm transition-colors hover:border-snow/30 hover:text-snow focus-visible:outline-2 focus-visible:outline-neon-blue"
       >
         Skip<span className="sr-only"> the pack opening and show the code</span>
         <span aria-hidden="true"> &rarr;</span>
@@ -110,13 +111,13 @@ function PromoPanel({ visible }) {
       animate={visible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.97 }}
       transition={{ duration: 0.7, ease: EASE }}
       inert={!visible}
-      className="pointer-events-auto mx-auto w-full max-w-md shrink-0 rounded-3xl border border-gold/25 bg-ink-2/75 p-5 text-left shadow-[0_0_70px_-12px_rgba(255,209,102,0.35)] backdrop-blur-md md:p-7 md:landscape:mx-0 md:landscape:w-[26rem]"
+      className="pointer-events-auto mx-auto w-full max-w-md shrink-0 rounded-3xl border border-gold/25 bg-ink-2/75 p-4 text-left shadow-[0_0_70px_-12px_rgba(255,209,102,0.35)] backdrop-blur-md sm:p-5 md:p-7 md:landscape:mx-0 md:landscape:w-[26rem]"
     >
-      <p className="font-script text-xl text-gold">Nice pull!</p>
-      <p className="mt-1 font-display text-6xl leading-none tracking-wide text-gold [text-shadow:0_0_24px_rgba(255,209,102,0.45)] md:text-7xl">
+      <p className="font-script text-lg text-gold md:text-xl">Nice pull!</p>
+      <p className="mt-1 font-display text-5xl leading-none tracking-wide text-gold [text-shadow:0_0_24px_rgba(255,209,102,0.45)] md:text-7xl">
         {promo.percent}% OFF
       </p>
-      <div className="mt-4 flex items-center gap-3 rounded-2xl border border-dashed border-gold/50 bg-ink/70 py-3 pr-3 pl-4">
+      <div className="mt-3 flex items-center gap-3 rounded-2xl border border-dashed border-gold/50 bg-ink/70 py-3 pr-3 pl-4 md:mt-4">
         <code className="min-w-0 flex-1 font-mono text-3xl font-bold tracking-[0.12em] text-snow md:text-4xl">
           {promo.code}
         </code>
@@ -128,10 +129,10 @@ function PromoPanel({ visible }) {
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <p className="mt-4 text-xs leading-relaxed text-fog">{promo.terms}</p>
+      <p className="mt-3 text-xs leading-relaxed text-fog md:mt-4">{promo.terms}</p>
       <a
         href="#categories"
-        className="mt-5 inline-flex items-center gap-2 rounded-full bg-snow px-5 py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+        className="mt-4 md:mt-5 inline-flex items-center gap-2 rounded-full bg-snow px-5 py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
       >
         Shop what we carry <span aria-hidden="true">&darr;</span>
       </a>
@@ -186,8 +187,9 @@ export default function Hero({ onRevealed }) {
     }
   }, [reducedMotion])
 
-  // Start fetching the scene chunk in parallel with the canvas chunk.
+  // Start fetching the scene chunk in parallel with the canvas chunk; warm the sound pool too.
   useEffect(() => {
+    preload()
     loadScene().catch(() => {})
   }, [])
 

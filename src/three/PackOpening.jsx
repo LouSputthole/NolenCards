@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { play } from '../sfx.js'
 import { useFrame } from '@react-three/fiber'
 import { Environment, Float, Lightformer, Sparkles, useCursor } from '@react-three/drei'
 import * as THREE from 'three'
@@ -56,7 +57,7 @@ const PROMO_INDEX = 4
 const SLOT_OF = [0, 4, 1, 3, 2]
 const FAN_R = 5
 const FAN_Y = 0.15
-const DROP_Y = -1.9
+const DROP_Y = -2.2
 const HALF_W = PACK_W / 2
 const CAM_FALLBACK_Z = 9
 const DEFAULT_RECT = { x: 0, y: 0.18, w: 1, h: 0.64 }
@@ -269,6 +270,13 @@ export default function PackOpening({ onRevealed, autoReveal = false, open = fal
       fired.current.reveal = true
       onRevealed?.()
     }
+    // Sound cues ride the same clock. Skipped/auto reveals stay silent.
+    if (!autoReveal && motion) {
+      const f = fired.current
+      if (t >= T.rip[0] && !f.sfxRip) { f.sfxRip = true; play('rip') }
+      if (t >= T.cardStart && !f.sfxFan) { f.sfxFan = true; play('fan', { volume: 0.7 }) }
+      if (t >= T.burst && !f.sfxBurst) { f.sfxBurst = true; play('shimmer') }
+    }
 
     /* ---- layout: fit the stage to the free area the page gives us ---- */
     const { width: vw, height: vh, dpr } = state.viewport
@@ -282,7 +290,7 @@ export default function PackOpening({ onRevealed, autoReveal = false, open = fal
     const spread = narrow ? 0.14 : 0.23
     const fanWidth = narrow ? 5.5 : 7.5
     // On narrow screens the outer fan cards may bleed off the edges; the pack is what has to fit.
-    const s = Math.min((sh * 0.94) / 3.9, sw / (fanWidth * (narrow ? 0.8 : 0.95)), 1.25)
+    const s = Math.min((sh * 0.94) / 3.9, sw / (fanWidth * (narrow ? 0.68 : 0.95)), 1.25)
 
     pointer.current.x = THREE.MathUtils.damp(pointer.current.x, state.pointer.x, 4, dt)
     pointer.current.y = THREE.MathUtils.damp(pointer.current.y, state.pointer.y, 4, dt)
@@ -397,7 +405,7 @@ export default function PackOpening({ onRevealed, autoReveal = false, open = fal
           const grow = easeOutBack(prog(t, T.focus, T.focus + T.travel + 0.05), 1.5)
           const flip = prog(t, ...T.flip)
           x = lerp(x, P.x, travel)
-          y = lerp(y, P.y, travel) + Math.sin(Math.PI * travel) * 0.4
+          y = lerp(y, P.y, travel) + Math.sin(Math.PI * travel) * 0.15
           z = lerp(z, P.z, travel)
           rz = 0.12 * Math.sin(Math.PI * travel)
           scale = lerp(1, P.s, grow)
