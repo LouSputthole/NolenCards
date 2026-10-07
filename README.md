@@ -1,16 +1,26 @@
-# React + Vite
+# Pretty Cool Cards Nolensville
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Website for the card shop at 7177 Nolensville Rd, Suite A3. Dark neon theme, Three.js pack-opening hero that hands out a 10% discount code.
 
-Currently, two official plugins are available:
+## Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```sh
+npm install
+npm run dev      # local
+npm run build    # static output in dist/
+npm test         # open-hours helper check
+```
 
-## React Compiler
+## Edit the content
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Everything a human changes lives in `src/content.js`: hours, phone, address, promo code, categories, community items, reviews. The logo is `public/logo.jpg`.
 
-## Expanding the Oxlint configuration
+## Layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- `src/sections/` one file per page section (Hero, Nav, Categories, Community, Reviews, Visit, Footer)
+- `src/three/` the R3F pack-opening scene and materials
+- `docs/DESIGN.md` the design brief
+
+## Deploy
+
+Static Vite site. Vercel: import the repo, framework preset "Vite", no env vars.
