@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+
+/* Brand tokens, pulled from the neon sign logo: white script, red skyline, blue football. */
+@theme {
+  --color-ink: #07070b;
+  --color-ink-2: #0f0f16;
+  --color-ink-3: #181824;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-fog: #a3a3b5;
+  --color-snow: #f4f4f8;
+  --color-neon-red: #ff2a3c;
+  --color-neon-blue: #2f6bff;
+  --color-neon-white: #eef2ff;
+  --color-gold: #ffd166;
+  --font-display: 'Bebas Neue', 'Oswald', Impact, sans-serif;
+  --font-script: 'Pacifico', cursive;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-snow);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Neon text glow helpers */
+.neon-red {
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 14px var(--color-neon-red), 0 0 32px var(--color-neon-red);
+}
+.neon-blue {
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 14px var(--color-neon-blue), 0 0 32px var(--color-neon-blue);
+}
+.neon-white {
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 16px rgba(255, 255, 255, 0.6);
+}
+
+/* Shared section rhythm */
+.section {
+  padding: clamp(4rem, 10vw, 8rem) 1rem;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
